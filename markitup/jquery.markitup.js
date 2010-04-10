@@ -286,20 +286,23 @@
 					}
 					string = { block:lines.join('\n')};
 					start = caretPosition;
-					len = string.block.length + (($.browser.opera) ? n : 0);
+						
+					len = string.block.length + (($.browser.opera) ? n-1: 0);
 				} else if (ctrlKey === true) {
 					string = build(selection);
 					start = caretPosition + string.openWith.length;
+					
 					len = string.block.length - string.openWith.length - string.closeWith.length;
 					len -= fixIeBug(string.block);
 				} else if (shiftKey === true) {
 					string = build(selection);
 					start = caretPosition;
+					
 					len = string.block.length;
 					len -= fixIeBug(string.block);
 				} else {
 					string = build(selection);
-					start = caretPosition + string.block.length ;
+					start = caretPosition + string.block.length;
 					len = 0;
 					start -= fixIeBug(string.block);
 				}
@@ -356,12 +359,13 @@
 			}
 				
 			// add markup
-			function insert(block) {	
+			function insert(block) {
 				if (document.selection) {
 					var newSelection = document.selection.createRange();
 					newSelection.text = block;
 				} else {
-					$$.val($$.val().substring(0, caretPosition)	+ block + $$.val().substring(caretPosition + selection.length, $$.val().length));
+					textarea.value =	textarea.value.substring(0, caretPosition)	+ block + 
+										textarea.value.substring(caretPosition + selection.length, textarea.value.length)
 				}
 			}
 
@@ -404,7 +408,8 @@
 					}
 				} else { // gecko & webkit
 					caretPosition = textarea.selectionStart;
-					selection = $$.val().substring(caretPosition, textarea.selectionEnd);
+					
+					selection = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
 				} 
 				return selection;
 			}
